@@ -1,0 +1,24 @@
+meta {
+  name: PUT USER
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:3000/users/2
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": 2,
+    "email": "user@example.com",
+    "username": "user2",
+    "nickname": "User NEW Nickname"
+  }
+}
+
+vars:pre-request {
+  userId: 1
+}
