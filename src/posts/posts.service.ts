@@ -1,16 +1,17 @@
+import { Post } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
-import { PostType } from "./post.interface";
+
 
 
 @Injectable()
 export class PostsService {
-    private readonly posts : PostType[] = []
+    private readonly posts : Post[] = []
 
-    findAll() : PostType[] {
+    findAll() : Post[] {
         return this.posts
     }
 
-    create(post : PostType) {
+    create(post : Post) {
         this.posts.push(post)
     }
 }
