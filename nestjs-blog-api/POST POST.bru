@@ -1,0 +1,30 @@
+meta {
+  name: POST POST
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/posts
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "id": 1,
+    "title": "string",
+    "content": "string"
+  }
+}
+
+tests {
+  {
+    id:1,
+    
+  }
+}
