@@ -5,21 +5,29 @@ import {
   Put,
   Body,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User as UserType } from '@prisma/client';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async findAll(): Promise<UserType[]> {
-    return this.usersService.users({});
+  async getUsers(@Query() { page = 1, limit = 10 }: PaginationDto) {
+    const skip = (page - 1) * limit;
+
+    return this.usersService.users({
+      skip,
+      take: Number(limit),
+    });
   }
+  
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<UserType> {
+  async getUser(@Param('id') id: string): Promise<UserType> {
     return this.usersService.user({ id: Number(id) });
   }
 
