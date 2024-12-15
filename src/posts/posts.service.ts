@@ -69,6 +69,7 @@ export class PostsService {
       commentsCount: post.comments ? post.comments.length : 0,
       isLikedByUser: userId ? post.likes.length > 0 : false,
       comments: undefined, // Exclude comments from the returned data
+      likes: undefined, // Exclude likes from the returned data
     };
   }
 
@@ -93,12 +94,27 @@ export class PostsService {
   }
 
   async likePost(postId: number, userId: number) {
-    return this.prisma.like.create({
+    const existingLike = await this.prisma.like.findFirst({
+      where: {
+        postId,
+        userId,
+      },
+    });
+
+    if (existingLike) {
+      await this.prisma.like.delete({
+        where: { id: existingLike.id },
+      });
+      return { status: 'success', message: 'Like removed' };
+    }
+
+    await this.prisma.like.create({
       data: {
         post: { connect: { id: postId } },
         user: { connect: { id: userId } },
       },
     });
+    return { status: 'success', message: 'Like added' };
   }
 
   async getLikes(postId: number) {

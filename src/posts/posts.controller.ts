@@ -26,10 +26,10 @@ export class PostsController {
   @Post(':postId/comments')
   addComment(
     @Param('postId', ParseIntPipe) postId: number,
-    @Body('authorId') authorId: number,
     @Body('content') content: string,
+    @Request() request: any,
   ) {
-    return this.postsService.addComment(postId, authorId, content);
+    return this.postsService.addComment(postId, request.user?.id, content);
   }
 
   @Get(':postId/comments')
@@ -41,9 +41,9 @@ export class PostsController {
   @Post(':postId/like')
   likePost(
     @Param('postId', ParseIntPipe) postId: number,
-    @Body('userId') userId: number,
+    @Request() request: any,
   ) {
-    return this.postsService.likePost(postId, userId);
+    return this.postsService.likePost(postId, request.user?.id);
   }
 
   @Get(':postId/likes')
